@@ -90,6 +90,7 @@ PALETTE16B_BITS4567 = (0x4 + (1 << 1) + 1)
 PALETTE16B = (PALETTE16B_BITS0123, PALETTE16B_BITS4567)
 
 from array import array
+from compress import Codec
 from PIL import Image   # pillow >= 1.0
 
 def dump(hh, name, data):
@@ -317,6 +318,52 @@ def isnonblank(im):
         return colors != set([transparent])
     else:
         return True
+
+def bgencode(im, name, compress=True):  # Mostly, if you don't compress that doesn't work!!!
+    (picdata,chrdata,paldata) = encode(im)
+
+    fullscreen = (im.size == (512, 512))
+
+    if compress:
+        cc = Codec(b_off = 9, b_len = 3)
+        if fullscreen:
+            picdata = cc.toarray(picdata.tostring())
+        chrdata = cc.toarray(chrdata.tostring())
+        paldata = cc.toarray(paldata.tostring())
+
+    with open("%s.h" % (name), 'w') as file:
+        dump(file, "%s_pic" % name, picdata)
+        dump(file, "%s_chr" % name, chrdata)
+        dump(file, "%s_pal" % name, paldata)
+
+
+def spencode(im, name, size, palette, compress=True):  # Mostly, if you don't compress that doesn't work!!!
+    sprites = []
+    for y in range(0, im.size[1], size[1]):
+        for x in range(0, im.size[0], size[0]):
+            sprites.append((x, y))
+
+    if '256' in palette:
+        ncol = 256
+    elif '16' in palette:
+        ncol = 16
+    else:
+        ncol = 4
+    im = im.convert("RGBA")
+    imp = palettize(im, ncol)
+    imp.convert("RGBA")#.save("%s/paletted.png" % dstdir)
+
+    with open("%s.h" % name, 'w') as file: 
+        ir = ImageRAM(file)
+        ir.addsprites(name, size, imp, eval("gdprep.%s" % palette), center=(size[0]/2,size[1]/2))
+        if compress:
+            cc = Codec(b_off = 9, b_len = 3)
+            sprimg = cc.toarray(ir.used().tostring())
+        else:
+            sprimg = ir.used()
+        dump(file, "sprite_sprimg", sprimg)
+        dump(file, "sprite_sprpal", getpal(imp))
+
 
 class ImageRAM(object):
     """
