@@ -1,7 +1,7 @@
 from distutils.core import setup
 setup(name='gameduino',
-      version='1.0.3',
-      author='James Bowman',
+      version='1.0.4',
+      author='James Bowman | modified',
       author_email='jamesb@excamera.com',
       url='http://gameduino.com',
       description='Package of Gameduino development tools',

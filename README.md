@@ -59,3 +59,11 @@ Licensing
 ---------
 
 Gameduino is open-source hardware (BSD license) and all its code is GPL licensed.
+
+This fork
+--------
+This fork fixed the problem envolving old Pillow versions but only works for python2
+
+How to install?
+--------
+`pip install git+https://github.com/azzolinovarella/gameduino#repository=scr`

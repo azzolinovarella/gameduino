@@ -90,7 +90,7 @@ PALETTE16B_BITS4567 = (0x4 + (1 << 1) + 1)
 PALETTE16B = (PALETTE16B_BITS0123, PALETTE16B_BITS4567)
 
 from array import array
-import Image
+from PIL import Image   # pillow >= 1.0
 
 def dump(hh, name, data):
     """
@@ -232,7 +232,7 @@ def encode(im):
             glyph = iglyph.tostring()
             if not glyph in charset:
                 if len(charset) == 256:
-                    raise OverflowError
+                    raise CharsetException("Charset is bigger than 256. You should fix your image and try again.")
                 charset[glyph] = len(charset)
             picture.append(charset[glyph])
     picd = array('B', picture)
@@ -494,5 +494,10 @@ def spectrum(specfile, cutoff = 64, volume = 255):
     amps = [(f,math.pow(2, .1 * db)) for (f, db) in top]
     samps = sum([a for (f,a) in amps])
     return [(f, int(volume * a / samps)) for (f, a) in amps]
+
+class CharsetException(Exception):
+    def __init__(self, message):
+        Exception.__init__(self, message)
+
 
 __all__ = [ "encode", "dump", "palettize", "getpal", "ImageRAM", "spectrum", ]
