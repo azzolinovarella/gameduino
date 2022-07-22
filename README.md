@@ -66,4 +66,4 @@ This fork fixed the problem envolving old Pillow versions but only works for pyt
 
 How to install?
 --------
-`pip install git+https://github.com/azzolinovarella/gameduino#repository=scr`
+`pip install git+https://github.com/azzolinovarella/gameduino.git#subdirectory=src`
