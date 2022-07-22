@@ -40,7 +40,6 @@ per-voice sine wave or white noise
 sample playback channel
 The adapter is controlled via SPI read/write operations, and looks to the CPU like a 32Kbyte RAM. (Unlike many 8-bit machines, there are no restrictions on when you can access this RAM). There is a handy reference poster showing how the whole system works, and a set of sample programs and library.
 
-[![Poster thumbnail](./doc/images/poster.jpg)](./doc/poster.pdf)
 
 Contents
 --------
