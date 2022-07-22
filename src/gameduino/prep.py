@@ -332,9 +332,9 @@ def bgencode(im, name, compress=True):  # Mostly, if you don't compress that doe
         paldata = cc.toarray(paldata.tostring())
 
     with open("%s.h" % (name), 'w') as file:
-        dump(file, "%s_pic" % name, picdata)
-        dump(file, "%s_chr" % name, chrdata)
-        dump(file, "%s_pal" % name, paldata)
+        dump(file, "image_pic", picdata)
+        dump(file, "image_chr", chrdata)
+        dump(file, "image_pal", paldata)
 
 
 def spencode(im, name, size, palette, compress=True):  # Mostly, if you don't compress that doesn't work!!!
