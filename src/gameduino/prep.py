@@ -355,7 +355,7 @@ def spencode(im, name, size, palette, compress=True):  # Mostly, if you don't co
 
     with open("%s.h" % name, 'w') as file: 
         ir = ImageRAM(file)
-        ir.addsprites(name.split('/')[-1], size, imp, eval(palette), center=(size[0]/2,size[1]/2))
+        ir.addsprites("sprite", size, imp, eval(palette), center=(size[0]/2,size[1]/2))
         if compress:
             cc = Codec(b_off = 9, b_len = 3)
             sprimg = cc.toarray(ir.used().tostring())
